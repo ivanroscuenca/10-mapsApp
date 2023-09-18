@@ -1,9 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Map, LngLat, Marker } from 'mapbox-gl';
 
 @Component({
   templateUrl: './markers-page.component.html',
-  styleUrls: ['./markers-page.component.css']
+  styleUrls: ['./markers-page.component.css'],
 })
 export class MarkersPageComponent {
+  @ViewChild('map') divMap?: ElementRef;
 
+  public zoom: number = 13;
+  public map?: Map;
+  public currentLngLat: LngLat = new LngLat(
+    2.186853699463427,
+    41.40253262014389
+  );
+
+  ngAfterViewInit(): void {
+    if (!this.divMap) throw 'El elemento HTML no fue encontrado';
+
+    this.map = new Map({
+      container: this.divMap.nativeElement, // container ID
+      style: 'mapbox://styles/mapbox/streets-v12', // style URL
+      center: this.currentLngLat,
+      zoom: this.zoom, // starting zoom
+    });
+    // const marker = new Marker({ color: 'red' })
+    //   .setLngLat(this.currentLngLat)
+    //   .addTo(this.map);
+  }
 }
